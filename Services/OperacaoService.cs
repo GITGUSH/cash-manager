@@ -36,7 +36,6 @@ public class OperacaoService
                 TipoES = reader.GetString(3),
                 DataOperacao = reader.GetDateTime(4),
                 IdConta = reader.GetInt32(5),
-                IdUsuario = reader.GetInt32(6),
                 IdCategoria = reader.GetInt32(7)
             });
         }

@@ -28,7 +28,6 @@ public class ContaService
                 {
                     IdConta = reader.GetInt32(0),
                     Nome = reader.GetString(1),
-                    IdUsuario = reader.GetInt32(2),
                     Saldo = reader.GetDecimal(3),
                     DataInclusao = reader.GetDateTime(4)
                 });

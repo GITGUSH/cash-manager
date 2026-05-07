@@ -8,6 +8,5 @@ public class Operacao
     public string? TipoES {get; set; }
     public DateTime DataOperacao {get; set; }
     public int IdConta {get; set; }
-    public int IdUsuario {get; set; }
     public int IdCategoria {get; set; }
 }

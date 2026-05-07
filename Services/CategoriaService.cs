@@ -29,7 +29,6 @@ public class CategoriaService
                 IdCategoria = reader.GetInt32(0),
                 Nome = reader.GetString(1),
                 TipoES = reader.GetString(2),
-                IdUsuario = reader.GetInt32(3)
             });
         }
         
