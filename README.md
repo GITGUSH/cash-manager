@@ -33,7 +33,7 @@ The project follows a simple and scalable architecture using ASP.NET Minimal API
 1. Clone the repository
 2. Create the PostgreSQL database
 3. Execute the SQL scripts in /scripts folder
-4. Setup the .env file with the database credencials.
+4. Setup the .env file with the database and jwt credencials, use de .env.exemple file.
 5. Run the project with 'dotnet run'
 
 ---
