@@ -6,6 +6,7 @@ var app = builder.Build();
 
 UsuarioController.MapearRotas(app);
 ContaController.MapearRotas(app);
+CategoriaController.MapearRotas(app);
 
 app.Run();
 

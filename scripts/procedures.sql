@@ -100,3 +100,22 @@ $BODY$;
 ALTER PROCEDURE public.inserir_conta(character varying, integer, numeric)
     OWNER TO postgres;
 
+
+
+
+-- PROCEDURE: public.inserir_categoria(character varying, character varying, integer)
+-- DROP PROCEDURE IF EXISTS public.inserir_categoria(character varying, character varying, integer);
+
+CREATE OR REPLACE PROCEDURE public.inserir_categoria(
+	IN p_nome character varying,
+	IN p_tipo_es character varying,
+	IN p_id_usuario integer)
+LANGUAGE 'plpgsql'
+AS $BODY$
+BEGIN
+    INSERT INTO categoria (nome, tipo_es, id_usuario)
+    VALUES (p_nome, p_tipo_es, p_id_usuario);
+END;
+$BODY$;
+ALTER PROCEDURE public.inserir_categoria(character varying, character varying, integer)
+    OWNER TO postgres;
