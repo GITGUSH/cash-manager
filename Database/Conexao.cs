@@ -1,7 +1,7 @@
 using Npgsql;
 using DotNetEnv;
 
-public class Conexao
+public class Conexao //Cria a conexão com o banco de dados, buscando as credenciais no arquivo de ambiente
 {
     public static NpgsqlConnection Abrir()
     {

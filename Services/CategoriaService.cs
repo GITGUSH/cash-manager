@@ -2,7 +2,7 @@ using Npgsql;
 
 public class CategoriaService
 {
-    public void Inserir(string nome, string tipoES, int idUsuario)
+    public void Inserir(string nome, string tipoES, int idUsuario) //Função para inserir uma categoria
     {
         using var conn = Conexao.Abrir();
         using var cmd = new NpgsqlCommand("CALL inserir_categoria(@nome, @tipoES, @idUsuario)", conn);
@@ -14,7 +14,7 @@ public class CategoriaService
         cmd.ExecuteNonQuery();
     }
 
-    public List<Categoria> Listar()
+    public List<Categoria> Listar() //Função para listar as categorias existentes 
     {
         var categorias = new List<Categoria>();
 
