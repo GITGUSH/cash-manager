@@ -11,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET")!;
 var key = Encoding.UTF8.GetBytes(secret);
 
+/*builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNamingPolicy = null;
+});*/
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
