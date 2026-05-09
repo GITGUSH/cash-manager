@@ -35,4 +35,13 @@ public class CategoriaService
     
         return categorias;
     }
+
+    public void Deletar(int idCategoria, int idUsuario)
+    {
+        using var conn = Conexao.Abrir();
+        using var cmd = new NpgsqlCommand("DELETE FROM categoria WHERE id_categoria = @idCategoria AND id_usuario = @idUsuario", conn);
+        cmd.Parameters.AddWithValue("@idCategoria", idCategoria);
+        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+        cmd.ExecuteNonQuery();
+    }
 }
