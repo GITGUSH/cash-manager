@@ -8,4 +8,5 @@ public class Operacao
     public DateTime DataOperacao {get; set; }
     public int IdConta {get; set; }
     public int IdCategoria {get; set; }
+    public string? NomeConta { get; set; }
 }

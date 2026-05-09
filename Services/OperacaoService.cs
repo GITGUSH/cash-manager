@@ -23,7 +23,11 @@ public class OperacaoService
         var operacoes = new List<Operacao>();
 
         using var conn = Conexao.Abrir();
-        using var cmd = new NpgsqlCommand("SELECT id_operacao, descricao, valor, tipo_es, data_operacao, id_conta, id_categoria FROM operacao WHERE id_usuario = @idUsuario", conn);
+        using var cmd = new NpgsqlCommand(@"
+        SELECT o.id_operacao, o.descricao, o.valor, o.tipo_es, o.data_operacao, o.id_conta, o.id_categoria, c.nome
+        FROM operacao o
+        INNER JOIN conta c ON o.id_conta = c.id_conta
+        WHERE o.id_usuario = @idUsuario", conn);
         cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         using var reader = cmd.ExecuteReader();
 
@@ -37,7 +41,8 @@ public class OperacaoService
                 TipoES       = reader.GetString(3),
                 DataOperacao = reader.GetDateTime(4),
                 IdConta      = reader.GetInt32(5),
-                IdCategoria  = reader.GetInt32(6)
+                IdCategoria  = reader.GetInt32(6),
+                NomeConta    = reader.GetString(7)
             });
         }
 
