@@ -1,16 +1,16 @@
-# 💰 Cash Manager — Backend
+# Cash Manager — Backend
 
 Sistema de controle financeiro pessoal desenvolvido em **C# com ASP.NET Minimal API** e **PostgreSQL**.
 
 ---
 
-## 📋 Sobre o projeto
+## Sobre o projeto
 
 O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O sistema permite cadastrar contas, categorias e operações financeiras, com autenticação segura via JWT e hash de senhas com BCrypt.
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## Tecnologias utilizadas
 
 | Tecnologia | Função |
 |---|---|
@@ -23,7 +23,7 @@ O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O siste
 
 ---
 
-## 🗄️ Modelagem do banco de dados
+## Modelagem do banco de dados
 
 ```
 USUARIO
@@ -40,7 +40,7 @@ USUARIO
 
 ---
 
-## 🔐 Autenticação
+## Autenticação
 
 O sistema utiliza **JWT** para proteger as rotas. O fluxo é:
 
@@ -77,7 +77,7 @@ Cliente usa o token em todas as requisições seguintes
 
 ---
 
-## 📁 Estrutura do projeto
+## Estrutura do projeto
 
 ```
 cash_manager/
@@ -93,7 +93,7 @@ cash_manager/
 
 ---
 
-## ⚙️ Como rodar localmente
+## Como rodar localmente
 
 ### Pré-requisitos
 
@@ -142,7 +142,7 @@ A API estará disponível em `http://localhost:5284`.
 
 ---
 
-## 🧪 Como testar as rotas
+## Como testar as rotas
 
 Use o [Thunder Client](https://www.thunderclient.com/), [Postman](https://www.postman.com/) ou qualquer cliente HTTP.
 
@@ -190,7 +190,7 @@ Content-Type: application/json
 
 ---
 
-## 🔒 Segurança
+## Segurança
 
 - Senhas armazenadas com hash BCrypt — nunca em texto puro
 - Rotas protegidas por JWT — sem token, sem acesso
@@ -199,7 +199,7 @@ Content-Type: application/json
 
 ---
 
-## 👨‍💻 Autor
+## Autor
 
 Desenvolvido por **Gustavo Fiocco**
 
