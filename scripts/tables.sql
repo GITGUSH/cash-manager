@@ -98,5 +98,18 @@ CREATE TABLE IF NOT EXISTS public.categoria
 
 TABLESPACE pg_default;
 
+
+
+--Altera a tabela de oeprações para o DELETE em cascata
 ALTER TABLE IF EXISTS public.categoria
     OWNER to postgres;    
+
+
+ALTER TABLE operacao
+DROP CONSTRAINT operacao_id_conta_fkey;
+
+ALTER TABLE operacao
+ADD CONSTRAINT operacao_id_conta_fkey
+FOREIGN KEY (id_conta)
+REFERENCES conta(id_conta)
+ON DELETE CASCADE;

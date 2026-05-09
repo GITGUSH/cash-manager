@@ -14,24 +14,25 @@ public class CategoriaService
         cmd.ExecuteNonQuery();
     }
 
-    public List<Categoria> Listar() //Função para listar as categorias existentes 
+   public List<Categoria> Listar(int idUsuario)
     {
         var categorias = new List<Categoria>();
-
+    
         using var conn = Conexao.Abrir();
-        using var cmd = new NpgsqlCommand("SELECT id_categoria, nome, tipo_es, id_usuario FROM categoria", conn);
+        using var cmd = new NpgsqlCommand("SELECT id_categoria, nome, tipo_es FROM categoria WHERE id_usuario = @idUsuario",    conn);
+        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         using var reader = cmd.ExecuteReader();
-
+    
         while (reader.Read())
         {
             categorias.Add(new Categoria
             {
                 IdCategoria = reader.GetInt32(0),
-                Nome = reader.GetString(1),
-                TipoES = reader.GetString(2),
+                Nome        = reader.GetString(1),
+                TipoES      = reader.GetString(2)
             });
         }
-        
+    
         return categorias;
     }
 }

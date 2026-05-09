@@ -11,9 +11,10 @@ public static class OperacaoController
             return Results.Ok("Operação criada com sucesso!");
         }).RequireAuthorization();
 
-        app.MapGet("/operacoes", () =>
-        {   
-            var lista = service.Listar();
+        app.MapGet("/operacoes", (HttpContext http) =>
+        {
+            var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
+            var lista = service.Listar(idUsuario);
             return Results.Ok(lista);
         }).RequireAuthorization();
     }

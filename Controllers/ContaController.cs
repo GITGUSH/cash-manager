@@ -14,8 +14,15 @@ public static class ContaController
         app.MapGet("/contas", (HttpContext http) =>
         {
             var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
-            var lista = service.Listar();
+            var lista = service.Listar(idUsuario);
             return Results.Ok(lista);
+        }).RequireAuthorization();
+
+        app.MapDelete("/conta/{id}", (int id, HttpContext http) =>
+        {
+            var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
+            service.Deletar(id, idUsuario);
+            return Results.Ok("Conta deletada com sucesso!");
         }).RequireAuthorization();
     }
 }

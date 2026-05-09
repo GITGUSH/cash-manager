@@ -14,24 +14,34 @@ public class ContaService
         cmd.ExecuteNonQuery();
     }
 
-    public List<Conta> Listar()
+        public List<Conta> Listar(int idUsuario)
     {
         var contas = new List<Conta>();
-
+    
         using var conn = Conexao.Abrir();
-        using var cmd = new NpgsqlCommand("SELECT id_conta, nome, id_usuario, saldo, data_inclusao FROM conta", conn);
+        using var cmd = new NpgsqlCommand("SELECT id_conta, nome, saldo FROM conta WHERE id_usuario = @idUsuario", conn);
+        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         using var reader = cmd.ExecuteReader();
-
+    
         while (reader.Read())
+        {
+            contas.Add(new Conta
             {
-                contas.Add(new Conta
-                {
-                    IdConta = reader.GetInt32(0),
-                    Nome = reader.GetString(1),
-                    Saldo = reader.GetDecimal(3),
-                    DataInclusao = reader.GetDateTime(4)
-                });
-            }
+                IdConta = reader.GetInt32(0),
+                Nome    = reader.GetString(1),
+                Saldo   = reader.GetDecimal(2)
+            });
+        }
+    
         return contas;
+    }
+
+    public void Deletar(int idConta, int idUsuario)
+    {
+        using var conn = Conexao.Abrir();
+        using var cmd = new NpgsqlCommand("DELETE FROM conta WHERE id_conta = @idConta AND id_usuario = @idUsuario", conn);
+        cmd.Parameters.AddWithValue("@idConta", idConta);
+        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+        cmd.ExecuteNonQuery();
     }
 }

@@ -18,25 +18,24 @@ public class OperacaoService
         
     }
 
-    public List<Operacao> Listar()
+        public List<Operacao> Listar(int idUsuario)
     {
         var operacoes = new List<Operacao>();
 
         using var conn = Conexao.Abrir();
-        using var cmd = new NpgsqlCommand("SELECT id_operacao, descricao, valor, tipo_es, data_operacao, id_conta, id_usuario, id_categoria FROM operacao", conn);
+        using var cmd = new NpgsqlCommand("SELECT id_operacao, descricao, valor, tipo_es, data_operacao FROM operacao WHERE id_usuario = @idUsuario", conn);
+        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         using var reader = cmd.ExecuteReader();
 
         while (reader.Read())
         {
             operacoes.Add(new Operacao
             {
-                IdOperacao = reader.GetInt32(0),
-                Descricao = reader.GetString(1),
-                Valor = reader.GetDecimal(2),
-                TipoES = reader.GetString(3),
-                DataOperacao = reader.GetDateTime(4),
-                IdConta = reader.GetInt32(5),
-                IdCategoria = reader.GetInt32(7)
+                IdOperacao   = reader.GetInt32(0),
+                Descricao    = reader.GetString(1),
+                Valor        = reader.GetDecimal(2),
+                TipoES       = reader.GetString(3),
+                DataOperacao = reader.GetDateTime(4)
             });
         }
 

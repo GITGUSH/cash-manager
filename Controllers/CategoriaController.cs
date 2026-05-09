@@ -11,9 +11,10 @@ public static class CategoriaController
             return Results.Ok("Categoria criada com sucesso!");
         }).RequireAuthorization();
 
-        app.MapGet("/categorias", () =>
+        app.MapGet("/categorias", (HttpContext http) =>
         {
-            var lista = service.Listar();
+            var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
+            var lista = service.Listar(idUsuario);
             return Results.Ok(lista);
         }).RequireAuthorization();
     }
