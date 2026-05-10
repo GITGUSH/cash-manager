@@ -10,6 +10,15 @@ O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O siste
 
 ---
 
+## Regras de negócio
+
+- Contas e categorias não podem ser deletadas se possuírem operações vinculadas
+- Ao deletar uma operação, o saldo da conta é revertido automaticamente
+- Emails de usuário são únicos no sistema
+- Operações de saída só aceitam categorias do tipo saída e vice-versa
+
+---
+
 ## Tecnologias utilizadas
 
 | Tecnologia | Função |
