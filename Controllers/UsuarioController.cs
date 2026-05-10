@@ -6,7 +6,12 @@ public static class UsuarioController
 
         app.MapPost("/usuario", (Usuario usuario) =>
         {
-            service.Inserir(usuario.Nome!, usuario.Email!, usuario.SenhaHash!);
+            var service = new UsuarioService();
+            var cadastrou = service.Inserir(usuario.Nome!, usuario.Email!, usuario.SenhaHash!);
+
+            if (!cadastrou)
+                return Results.BadRequest("Este e-mail já está cadastrado.");
+
             return Results.Ok("Usuário criado com sucesso!");
         });
 
@@ -15,5 +20,6 @@ public static class UsuarioController
             var lista = service.Listar();
             return Results.Ok(lista);
         });
+
     }
 }
