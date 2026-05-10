@@ -48,4 +48,42 @@ public class OperacaoService
 
         return operacoes;
     }
+
+    public void Deletar(int idOperacao, int idUsuario)
+{
+    using var conn = Conexao.Abrir();
+
+    // Busca o valor e tipo da operação antes de deletar
+    decimal valor = 0;
+    string tipoES = "";
+    int idConta = 0;
+
+    using (var cmdBusca = new NpgsqlCommand("SELECT valor, tipo_es, id_conta FROM operacao WHERE id_operacao = @idOperacao AND id_usuario = @idUsuario", conn))
+    {
+        cmdBusca.Parameters.AddWithValue("@idOperacao", idOperacao);
+        cmdBusca.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+        using var reader = cmdBusca.ExecuteReader();
+        if (reader.Read())
+        {
+            valor   = reader.GetDecimal(0);
+            tipoES  = reader.GetString(1);
+            idConta = reader.GetInt32(2);
+        }
+    }
+
+    // Reverte o saldo da conta
+    string operacaoSaldo = tipoES == "E" ? "-" : "+";
+    using (var cmdSaldo = new NpgsqlCommand($"UPDATE conta SET saldo = saldo {operacaoSaldo} @valor WHERE id_conta = @idConta", conn))
+    {
+        cmdSaldo.Parameters.AddWithValue("@valor", valor);
+        cmdSaldo.Parameters.AddWithValue("@idConta", idConta);
+        cmdSaldo.ExecuteNonQuery();
+    }
+
+    // Deleta a operação
+    using var cmdDelete = new NpgsqlCommand("DELETE FROM operacao WHERE id_operacao = @idOperacao", conn);
+    cmdDelete.Parameters.AddWithValue("@idOperacao", idOperacao);
+    cmdDelete.ExecuteNonQuery();
+}
 }
