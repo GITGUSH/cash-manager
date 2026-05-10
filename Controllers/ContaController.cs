@@ -19,9 +19,13 @@ public static class ContaController
         }).RequireAuthorization();
 
         app.MapDelete("/conta/{id}", (int id, HttpContext http) =>
-        {
+{
             var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
-            service.Deletar(id, idUsuario);
+            var deletou = service.Deletar(id, idUsuario);
+        
+            if (!deletou)
+                return Results.BadRequest("Conta possui operações vinculadas e não pode ser deletada.");
+        
             return Results.Ok("Conta deletada com sucesso!");
         }).RequireAuthorization();
     }

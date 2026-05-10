@@ -36,12 +36,22 @@ public class ContaService
         return contas;
     }
 
-    public void Deletar(int idConta, int idUsuario)
+    public bool Deletar(int idConta, int idUsuario)
     {
         using var conn = Conexao.Abrir();
+    
+        // Verifica se tem operações vinculadas
+        using var cmdVerifica = new NpgsqlCommand("SELECT COUNT(*) FROM operacao WHERE id_conta = @idConta", conn);
+        cmdVerifica.Parameters.AddWithValue("@idConta", idConta);
+        var total = (long)cmdVerifica.ExecuteScalar()!;
+    
+        if (total > 0) return false; // tem operações, não deleta
+    
         using var cmd = new NpgsqlCommand("DELETE FROM conta WHERE id_conta = @idConta AND id_usuario = @idUsuario", conn);
         cmd.Parameters.AddWithValue("@idConta", idConta);
         cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         cmd.ExecuteNonQuery();
+    
+        return true; // deletou com sucesso
     }
 }

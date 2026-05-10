@@ -21,7 +21,11 @@ public static class CategoriaController
         app.MapDelete("/categoria/{id}", (int id, HttpContext http) =>
         {
             var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
-            service.Deletar(id, idUsuario);
+            var deletou = service.Deletar(id, idUsuario);
+        
+            if (!deletou)
+                return Results.BadRequest("Categoria possui operações vinculadas e não pode ser deletada.");
+        
             return Results.Ok("Categoria deletada com sucesso!");
         }).RequireAuthorization();
     }

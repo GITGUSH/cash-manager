@@ -36,12 +36,21 @@ public class CategoriaService
         return categorias;
     }
 
-    public void Deletar(int idCategoria, int idUsuario)
+    public bool Deletar(int idCategoria, int idUsuario)
     {
         using var conn = Conexao.Abrir();
+    
+        using var cmdVerifica = new NpgsqlCommand("SELECT COUNT(*) FROM operacao WHERE id_categoria = @idCategoria", conn);
+        cmdVerifica.Parameters.AddWithValue("@idCategoria", idCategoria);
+        var total = (long)cmdVerifica.ExecuteScalar()!;
+    
+        if (total > 0) return false;
+    
         using var cmd = new NpgsqlCommand("DELETE FROM categoria WHERE id_categoria = @idCategoria AND id_usuario = @idUsuario", conn);
         cmd.Parameters.AddWithValue("@idCategoria", idCategoria);
         cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         cmd.ExecuteNonQuery();
+    
+        return true;
     }
 }
