@@ -46,6 +46,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.MapPost("/shutdown", (IHostApplicationLifetime lifetime) =>
+{
+    lifetime.StopApplication();
+    return Results.Ok("Sistema encerrado.");
+});
+
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
