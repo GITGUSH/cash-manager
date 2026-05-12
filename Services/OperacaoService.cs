@@ -27,7 +27,8 @@ public class OperacaoService
         SELECT o.id_operacao, o.descricao, o.valor, o.tipo_es, o.data_operacao, o.id_conta, o.id_categoria, c.nome
         FROM operacao o
         INNER JOIN conta c ON o.id_conta = c.id_conta
-        WHERE o.id_usuario = @idUsuario", conn);
+        WHERE o.id_usuario = @idUsuario
+        ORDER BY o.data_operacao DESC", conn);
         cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
         using var reader = cmd.ExecuteReader();
 
