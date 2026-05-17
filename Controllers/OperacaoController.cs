@@ -18,6 +18,13 @@ public static class OperacaoController
             return Results.Ok(lista);
         }).RequireAuthorization();
 
+        app.MapGet("/operacoes/conta/{idConta}", (int idConta, DateTime dataInicio, DateTime dataFim, HttpContext http) =>
+        {
+            var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
+            var lista = service.ListarContaPorData(idConta, idUsuario, dataInicio, dataFim);
+            return Results.Ok(lista);
+        }).RequireAuthorization();
+
         app.MapDelete("/operacao/{id}", (int id, HttpContext http) =>
         {
             var idUsuario = int.Parse(http.User.FindFirst("id")!.Value);
