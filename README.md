@@ -6,7 +6,7 @@ Sistema de controle financeiro pessoal desenvolvido em **C# com ASP.NET Minimal 
 
 ## Sobre o projeto
 
-O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O sistema permite cadastrar contas, categorias e operações financeiras, com autenticação segura via JWT e hash de senhas com BCrypt.
+O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O sistema permite cadastrar contas, categorias e operações financeiras, com autenticação segura via JWT, hash de senhas com BCrypt e envio de extratos por email.
 
 ---
 
@@ -16,6 +16,7 @@ O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O siste
 - Ao deletar uma operação, o saldo da conta é revertido automaticamente
 - Emails de usuário são únicos no sistema
 - Operações de saída só aceitam categorias do tipo saída e vice-versa
+- Extrato de operações por conta filtrável por período com envio automático por email
 
 ---
 
@@ -29,6 +30,7 @@ O Cash Manager é uma API REST para gerenciamento de finanças pessoais. O siste
 | BCrypt.Net | Hash seguro de senhas |
 | JWT (JSON Web Token) | Autenticação e autorização |
 | DotNetEnv | Leitura de variáveis de ambiente |
+| MailKit | Envio de emails com anexo PDF |
 
 ---
 
@@ -74,15 +76,19 @@ Cliente usa o token em todas as requisições seguintes
 
 | Método | Rota | Descrição |
 |---|---|---|
+| GET | `/usuario/perfil` | Dados do usuário logado |
 | GET | `/contas` | Listar contas do usuário |
 | POST | `/conta` | Criar nova conta |
 | DELETE | `/conta/{id}` | Deletar conta |
 | GET | `/categorias` | Listar categorias do usuário |
 | POST | `/categoria` | Criar nova categoria |
 | DELETE | `/categoria/{id}` | Deletar categoria |
-| GET | `/operacoes` | Listar operações do usuário |
+| GET | `/operacoes` | Listar todas as operações do usuário |
 | POST | `/operacao` | Registrar nova operação |
 | DELETE | `/operacao/{id}` | Deletar operação |
+| GET | `/operacoes/conta/{id}` | Listar operações de uma conta por período |
+| POST | `/email/extrato` | Enviar extrato PDF por email |
+| POST | `/shutdown` | Encerrar o sistema |
 
 ---
 
@@ -140,7 +146,11 @@ DB_NAME=nome_do_banco
 DB_USER=postgres
 DB_PASSWORD=sua_senha
 JWT_SECRET=sua_chave_secreta_jwt
+EMAIL_USUARIO=seuemail@gmail.com
+EMAIL_SENHA=sua_senha_de_app_gmail
 ```
+
+> Para o envio de emails, é necessário gerar uma **Senha de App** no Gmail em [myaccount.google.com](https://myaccount.google.com) → Segurança → Senhas de app.
 
 **5. Rode o projeto**
 ```bash
@@ -197,6 +207,26 @@ Content-Type: application/json
 }
 ```
 
+### Exemplo — Extrato por período
+```http
+GET /operacoes/conta/1?dataInicio=2026-01-01&dataFim=2026-05-17
+Authorization: Bearer eyJhbGci...
+```
+
+### Exemplo — Enviar extrato por email
+```http
+POST /email/extrato
+Authorization: Bearer eyJhbGci...
+Content-Type: application/json
+
+{
+    "destinatario": "gustavo@email.com",
+    "nomeDestinatario": "Gustavo",
+    "assuntoPdf": "Extrato NUBANK — 01/01/2026 até 17/05/2026",
+    "pdfBase64": "JVBERi0x..."
+}
+```
+
 ---
 
 ## Segurança
@@ -205,6 +235,18 @@ Content-Type: application/json
 - Rotas protegidas por JWT — sem token, sem acesso
 - Cada usuário acessa apenas seus próprios dados
 - Credenciais nunca sobem para o repositório via `.env`
+
+---
+
+## Acesso em rede local
+
+Para acessar o sistema em outros dispositivos da mesma rede, adicione no `Program.cs`:
+
+```csharp
+app.Urls.Add("http://0.0.0.0:5284");
+```
+
+Descubra o IP da máquina com `ipconfig` e acesse pelo IP local, ex: `http://192.168.1.100:5284`.
 
 ---
 
