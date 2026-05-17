@@ -45,4 +45,25 @@ public class UsuarioService
 
         return usuarios;
     }
+
+    //Método para trazer os dados do usuário
+    public Usuario? BuscarPorId(int idUsuario)
+    {
+        using var conn = Conexao.Abrir();
+        using var cmd = new NpgsqlCommand("SELECT id_usuario, nome, email FROM usuario WHERE id_usuario = @idUsuario", conn);
+        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+        using var reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            return new Usuario
+            {
+                IdUsuario = reader.GetInt32(0),
+                Nome      = reader.GetString(1),
+                Email     = reader.GetString(2)
+            };
+        }
+
+        return null;
+    }
 }

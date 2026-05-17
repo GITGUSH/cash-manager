@@ -58,6 +58,7 @@ ContaController.MapearRotas(app);
 CategoriaController.MapearRotas(app);
 OperacaoController.MapearRotas(app);
 LoginController.MapearRotas(app);
+EmailController.MapearRotas(app);
 
 app.Urls.Add("http://0.0.0.0:5284");
 
